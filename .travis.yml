@@ -1,0 +1,12 @@
+language: go
+
+go:
+  - "1.11.x"
+
+install: true # Don't install
+
+before_script:
+  - go install golang.org/x/tools/cmd/goimports
+
+script:
+  - 
