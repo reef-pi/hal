@@ -6,7 +6,7 @@ go:
 install: true # Don't install
 
 before_script:
-  - go install golang.org/x/tools/cmd/goimports
+  - go get golang.org/x/tools/cmd/goimports
 
 script:
   - make test
