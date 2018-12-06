@@ -9,4 +9,4 @@ before_script:
   - go install golang.org/x/tools/cmd/goimports
 
 script:
-  - 
+  - make test
