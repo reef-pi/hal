@@ -1,4 +1,4 @@
-package driver
+package hal
 
 import "io"
 
@@ -24,16 +24,11 @@ type Driver interface {
 	Metadata() Metadata
 }
 
-///////////////////////////////////////////////////
-
 // Pin represents a single-bit digital input or output
 type Pin interface {
 	io.Closer
-
 	Name() string
 }
-
-///////////////////////////////////////////////////
 
 // InputPin represents an input pin with a single digital input
 // value.
@@ -49,8 +44,6 @@ type Input interface {
 	GetInputPin(name string) (InputPin, error)
 }
 
-//////////////////////////////////////////////////
-
 type OutputPin interface {
 	Pin
 	Write(state bool) error
@@ -63,15 +56,13 @@ type Output interface {
 	GetOutputPin(name string) (OutputPin, error)
 }
 
-//////////////////////////////////////////////////
-
-type PWMChannel interface {
+type Channel interface {
 	Name() string
 	Set(value float64) error
 }
 
 type PWM interface {
 	Driver
-	PWMChannels() []PWMChannel
-	GetPWMChannel(name string) (PWMChannel, error)
+	Channels() []Channel
+	GetChannel(name string) (Channel, error)
 }
