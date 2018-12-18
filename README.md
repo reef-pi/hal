@@ -1,9 +1,12 @@
 # reef-pi - Hardware Abstraction Layer
 
-The `hal` package gives base types and interfaces for various
-reef-pi hardware modules. This is designed to be primarily interfaces only
-void of business logic, zero dependency package that any custom hardware can
-use to make a reef-pi compatible device
+The `hal` package provide common types for hardware capabilities in reef-pi.
+It hides device specific details from the controller logic. reef-pi modules like ATO,
+pH, temperature uses hal to perform hardware based operations.
+
+'hal' is intended to be primarily interfaces only, void of business logic and
+any other dependency package. A NoopDriver or [null](https://en.wikipedia.org/wiki/Null_object_pattern)
+driver is included to ease testing.
 
 ## Usage
 
@@ -13,7 +16,7 @@ import(
 )
 
 func main() {
-  var d hal.Driver = CustomIODriver()
+  var d hal.Driver = hal.NewNoopDriver()
   d.Metadata()
   defer d.Close()
 
@@ -28,7 +31,7 @@ func main() {
   pin, _ := output.OutputPin("GP4")
   pin.Write(false)
 
-  var pwm PWMDriver = CustomPWMDriver()
+  var pwm PWMDriver = hal.NewNoopDrive()
   ch, _ := pwm.PWMChannel("foo")
   ch.Set(10.23)
   for _, ch := range pwm.PWMChannels() {
