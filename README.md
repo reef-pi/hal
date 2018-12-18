@@ -13,27 +13,27 @@ import(
 )
 
 func main() {
-	var d hal.Driver = CustomIODriver()
-	d.Metadata()
-	defer d.Close()
+  var d hal.Driver = CustomIODriver()
+  d.Metadata()
+  defer d.Close()
 
-	input, _ := d.(hal.InputDriver)
-	pin, _ := input.InputPin("GP4")
-	v, _ := pin.Read()
-	for _, pin := range input.InputPins() {
+  input, _ := d.(hal.InputDriver)
+  pin, _ := input.InputPin("GP4")
+  v, _ := pin.Read()
+  for _, pin := range input.InputPins() {
     fmt.Println(pin.Name())
-	}
+  }
 
   output, _ := d.(hal.OutputDriver)
-	pin, _ := output.OutputPin("GP4")
+  pin, _ := output.OutputPin("GP4")
   pin.Write(false)
 
-	var pwm PWMDriver = CustomPWMDriver()
-	ch, _ := pwm.PWMChannel("foo")
-	ch.Set(10.23)
-	for _, ch := range pwm.PWMChannels() {
+  var pwm PWMDriver = CustomPWMDriver()
+  ch, _ := pwm.PWMChannel("foo")
+  ch.Set(10.23)
+  for _, ch := range pwm.PWMChannels() {
      fmt.Println(ch.Name())
-	}
+  }
 }
 
 
