@@ -4,6 +4,25 @@ import (
 	"testing"
 )
 
+func TestCapabilities_HasCapabilities(t *testing.T) {
+	c1 := Capabilities{
+		Output: true,
+	}
+	c2 := Capabilities{
+		Input: true,
+		Output: true,
+	}
+	if !c1.HasCapabilities(c1) {
+		t.Errorf("capabilities aren't equal")
+	}
+	if !c2.HasCapabilities(c1) {
+		t.Errorf("capabilities aren't a superset")
+	}
+	if c1.HasCapabilities(c2) {
+		t.Errorf("capabilities were a subset")
+	}
+}
+
 func TestDriver(t *testing.T) {
 	var d Driver = NewNoopDriver()
 	if d.Metadata().Name == "" {
