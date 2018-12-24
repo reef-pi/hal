@@ -19,7 +19,7 @@ type Capabilities struct {
 	PH          bool `json:"ph"`
 }
 
-func (c *Capabilities) HasCapabilities(check Capabilities) bool {
+func (c Capabilities) HasCapabilities(check Capabilities) bool {
 	match := true
 	if check.Input {
 		if !c.Input {
