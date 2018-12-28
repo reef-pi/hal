@@ -19,15 +19,9 @@ type noopDriver struct{ meta Metadata }
 func NewNoopDriver() *noopDriver {
 	return &noopDriver{
 		meta: Metadata{
-			Name:        "noop-driver",
-			Description: "No operation (stub/null) hal driver for testing",
-			Capabilities: Capabilities{
-				Input:       true,
-				Output:      true,
-				PH:          true,
-				Temperature: true,
-				PWM:         true,
-			},
+			Name:         "noop-driver",
+			Description:  "No operation (stub/null) hal driver for testing",
+			Capabilities: []Capability{Input, Output, PH, Temperature, PWM},
 		},
 	}
 }
