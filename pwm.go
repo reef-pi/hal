@@ -1,12 +1,12 @@
 package hal
 
 type PWMChannel interface {
-	Name() string
+	OutputPin
 	Set(value float64) error
 }
 
 type PWMDriver interface {
-	Driver
+	OutputDriver
 	PWMChannels() []PWMChannel
 	PWMChannel(name string) (PWMChannel, error)
 }

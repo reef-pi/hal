@@ -9,12 +9,16 @@ func (p *noopPin) Read() (bool, error) { return true, nil }
 func (p *noopPin) Write(_ bool) error  { return nil }
 func (p *noopPin) LastState() bool     { return true }
 
-type noopChannel struct{}
+type noopChannel struct {
+	noopPin
+}
 
 func (ch *noopChannel) Set(_ float64) error { return nil }
 func (ch *noopChannel) Name() string        { return "noop pwm channel" }
 
-type noopDriver struct{ meta Metadata }
+type noopDriver struct {
+	meta Metadata
+}
 
 func NewNoopDriver() *noopDriver {
 	return &noopDriver{
