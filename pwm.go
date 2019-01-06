@@ -8,5 +8,5 @@ type PWMChannel interface {
 type PWMDriver interface {
 	OutputDriver
 	PWMChannels() []PWMChannel
-	PWMChannel(name string) (PWMChannel, error)
+	PWMChannel(int) (PWMChannel, error)
 }

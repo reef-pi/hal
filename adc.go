@@ -8,5 +8,5 @@ type ADCChannel interface {
 type ADCDriver interface {
 	Driver
 	ADCChannels() []ADCChannel
-	ADCChannel(name string) (ADCChannel, error)
+	ADCChannel(int) (ADCChannel, error)
 }
