@@ -21,7 +21,7 @@ type InputPin interface {
 type InputDriver interface {
 	Driver
 	InputPins() []InputPin
-	InputPin(name string) (InputPin, error)
+	InputPin(int) (InputPin, error)
 }
 
 type OutputPin interface {
@@ -33,5 +33,5 @@ type OutputPin interface {
 type OutputDriver interface {
 	Driver
 	OutputPins() []OutputPin
-	OutputPin(name string) (OutputPin, error)
+	OutputPin(int) (OutputPin, error)
 }

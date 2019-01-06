@@ -17,7 +17,7 @@ func TestDriver(t *testing.T) {
 	if len(input.InputPins()) != 0 {
 		t.Error("Wrong input pins:", len(input.InputPins()))
 	}
-	pin, err := input.InputPin("GP4")
+	pin, err := input.InputPin(4)
 	if err != nil {
 		t.Error(err)
 	}
@@ -28,7 +28,7 @@ func TestDriver(t *testing.T) {
 	if len(output.OutputPins()) != 0 {
 		t.Error("Wrong output pins:", len(output.OutputPins()))
 	}
-	opin, perr := output.OutputPin("GP4")
+	opin, perr := output.OutputPin(4)
 	if perr != nil {
 		t.Error(perr)
 	}
@@ -41,7 +41,7 @@ func TestDriver(t *testing.T) {
 		t.Error("Wrong number of pwm channels: ", len(pwm.PWMChannels()))
 	}
 
-	ppin, nerr := pwm.PWMChannel("foo")
+	ppin, nerr := pwm.PWMChannel(1)
 	if nerr != nil {
 		t.Error(nerr)
 	}

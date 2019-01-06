@@ -29,11 +29,11 @@ func NewNoopDriver() *noopDriver {
 		},
 	}
 }
-func (n *noopDriver) Metadata() Metadata                      { return n.meta }
-func (n *noopDriver) Close() error                            { return nil }
-func (n *noopDriver) InputPins() []InputPin                   { return []InputPin{} }
-func (n *noopDriver) OutputPins() []OutputPin                 { return []OutputPin{} }
-func (n *noopDriver) InputPin(_ string) (InputPin, error)     { return new(noopPin), nil }
-func (n *noopDriver) OutputPin(_ string) (OutputPin, error)   { return new(noopPin), nil }
-func (n *noopDriver) PWMChannels() []PWMChannel               { return []PWMChannel{} }
-func (n *noopDriver) PWMChannel(_ string) (PWMChannel, error) { return new(noopChannel), nil }
+func (n *noopDriver) Metadata() Metadata                   { return n.meta }
+func (n *noopDriver) Close() error                         { return nil }
+func (n *noopDriver) InputPins() []InputPin                { return []InputPin{} }
+func (n *noopDriver) OutputPins() []OutputPin              { return []OutputPin{} }
+func (n *noopDriver) InputPin(_ int) (InputPin, error)     { return new(noopPin), nil }
+func (n *noopDriver) OutputPin(_ int) (OutputPin, error)   { return new(noopPin), nil }
+func (n *noopDriver) PWMChannels() []PWMChannel            { return []PWMChannel{} }
+func (n *noopDriver) PWMChannel(_ int) (PWMChannel, error) { return new(noopChannel), nil }
