@@ -14,6 +14,9 @@ type Calibrator interface {
 }
 
 func CalibratorFactory(points []Measurement) (Calibrator, error) {
+	if points == nil {
+		return &noopCalibrator{}, nil
+	}
 	l := len(points)
 	switch l {
 	case 0:
