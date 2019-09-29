@@ -34,6 +34,14 @@ type Metadata struct {
 	Capabilities []Capability `json:"capabilities"`
 }
 
+type ConfigParameter struct {
+	Name     string `json:"name"`
+	Value    string `json:"value"`
+	DataType string `json:"datatype"`
+	Order    int    `json:"order"`
+	Default  string `json:"default"`
+}
+
 func (m Metadata) HasCapability(cap Capability) bool {
 	for _, c := range m.Capabilities {
 		if c == cap {
@@ -49,8 +57,12 @@ type Pin interface {
 	Name() string
 	Number() int
 }
+
 type Driver interface {
 	io.Closer
 	Metadata() Metadata
 	Pins(Capability) ([]Pin, error)
+	GetParameters() []ConfigParameter
+	LoadParameters(parameters []ConfigParameter) error
+	ValidateParameters(parameters []ConfigParameter) bool
 }

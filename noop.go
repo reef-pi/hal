@@ -52,6 +52,13 @@ func (n *noopDriver) DigitalInputPin(_ int) (DigitalInputPin, error) { return ne
 func (n *noopDriver) DigitalOutputPin(_ int) (DigitalOutputPin, error) {
 	return new(noopDigitalPin), nil
 }
+func (n *noopDriver) GetParameters() []ConfigParameter { return nil }
+func (n *noopDriver) LoadParameters(parameters []ConfigParameter) error {
+	return nil
+}
+func (n *noopDriver) ValidateParameters(parameters []ConfigParameter) bool {
+	return true
+}
 func (n *noopDriver) PWMChannels() []PWMChannel            { return []PWMChannel{} }
 func (n *noopDriver) PWMChannel(_ int) (PWMChannel, error) { return new(noopChannel), nil }
 
