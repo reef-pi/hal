@@ -1,15 +1,5 @@
 package hal
 
-import (
-	"io"
-)
-
-// Pin represents a single-bit digital input or output
-type Pin interface {
-	io.Closer
-	Name() string
-}
-
 // InputPin represents an input pin with a single digital input
 // value.
 type DigitalInputPin interface {

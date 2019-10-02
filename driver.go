@@ -43,6 +43,11 @@ func (m Metadata) HasCapability(cap Capability) bool {
 	return false
 }
 
+// Pin represents a single-bit digital input or output
+type Pin interface {
+	io.Closer
+	Name() string
+}
 type Driver interface {
 	io.Closer
 	Metadata() Metadata
