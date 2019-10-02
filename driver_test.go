@@ -50,3 +50,17 @@ func TestDriver(t *testing.T) {
 	}
 
 }
+
+func TestAnalog(t *testing.T) {
+	var input AnalogInputDriver = NewNoopDriver()
+	if len(input.AnalogInputPins()) != 0 {
+		t.Error("Wrong input pins:", len(input.AnalogInputPins()))
+	}
+	ipin, perr := input.AnalogInputPin(4)
+	if perr != nil {
+		t.Error(perr)
+	}
+	if _, err := ipin.Read(); err != nil {
+		t.Error(err)
+	}
+}

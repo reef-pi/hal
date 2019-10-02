@@ -9,6 +9,6 @@ type AnalogInputPin interface {
 
 type AnalogInputDriver interface {
 	Driver
-	AnaologInputPins() []AnalogInputPin
+	AnalogInputPins() []AnalogInputPin
 	AnalogInputPin(int) (AnalogInputPin, error)
 }
