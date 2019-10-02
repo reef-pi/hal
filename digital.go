@@ -12,26 +12,26 @@ type Pin interface {
 
 // InputPin represents an input pin with a single digital input
 // value.
-type InputPin interface {
+type DigitalInputPin interface {
 	Pin
 	// Read returns whether this input is logical high (true) or low (false)
 	Read() (bool, error)
 }
 
-type InputDriver interface {
+type DigitalInputDriver interface {
 	Driver
-	InputPins() []InputPin
-	InputPin(int) (InputPin, error)
+	DigitalInputPins() []DigitalInputPin
+	DigitalInputPin(int) (DigitalInputPin, error)
 }
 
-type OutputPin interface {
+type DigitalOutputPin interface {
 	Pin
 	Write(state bool) error
 	LastState() bool
 }
 
-type OutputDriver interface {
+type DigitalOutputDriver interface {
 	Driver
-	OutputPins() []OutputPin
-	OutputPin(int) (OutputPin, error)
+	DigitalOutputPins() []DigitalOutputPin
+	DigitalOutputPin(int) (DigitalOutputPin, error)
 }

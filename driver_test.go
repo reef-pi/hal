@@ -13,22 +13,22 @@ func TestDriver(t *testing.T) {
 		t.Error()
 	}
 
-	var input InputDriver = NewNoopDriver()
-	if len(input.InputPins()) != 0 {
-		t.Error("Wrong input pins:", len(input.InputPins()))
+	var input DigitalInputDriver = NewNoopDriver()
+	if len(input.DigitalInputPins()) != 0 {
+		t.Error("Wrong input pins:", len(input.DigitalInputPins()))
 	}
-	pin, err := input.InputPin(4)
+	pin, err := input.DigitalInputPin(4)
 	if err != nil {
 		t.Error(err)
 	}
 	if _, err := pin.Read(); err != nil {
 		t.Error(err)
 	}
-	var output OutputDriver = NewNoopDriver()
-	if len(output.OutputPins()) != 0 {
-		t.Error("Wrong output pins:", len(output.OutputPins()))
+	var output DigitalOutputDriver = NewNoopDriver()
+	if len(output.DigitalOutputPins()) != 0 {
+		t.Error("Wrong output pins:", len(output.DigitalOutputPins()))
 	}
-	opin, perr := output.OutputPin(4)
+	opin, perr := output.DigitalOutputPin(4)
 	if perr != nil {
 		t.Error(perr)
 	}
