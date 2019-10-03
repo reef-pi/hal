@@ -6,12 +6,25 @@ type Capability int
 
 const (
 	None Capability = iota
-	Input
-	Output
-	PH
-	Temperature
+	DigitalInput
+	DigitalOutput
 	PWM
+	AnalogInput
 )
+
+var (
+	_capNames = []string{
+		"none",
+		"digital-input",
+		"digital-output",
+		"pwm",
+		"analog-input",
+	}
+)
+
+func (c Capability) String() string {
+	return _capNames[c]
+}
 
 // Metadata represents basic information about a driver
 // for the API response.
@@ -30,7 +43,13 @@ func (m Metadata) HasCapability(cap Capability) bool {
 	return false
 }
 
+// Pin represents a single-bit digital input or output
+type Pin interface {
+	io.Closer
+	Name() string
+}
 type Driver interface {
 	io.Closer
 	Metadata() Metadata
+	Pins(Capability) ([]Pin, error)
 }

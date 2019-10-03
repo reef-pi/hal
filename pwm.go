@@ -1,12 +1,12 @@
 package hal
 
 type PWMChannel interface {
-	OutputPin
+	DigitalOutputPin
 	Set(value float64) error
 }
 
 type PWMDriver interface {
-	OutputDriver
+	DigitalOutputDriver
 	PWMChannels() []PWMChannel
 	PWMChannel(int) (PWMChannel, error)
 }
