@@ -12,6 +12,7 @@ func (p *noopDigitalPin) Close() error        { return nil }
 func (p *noopDigitalPin) Read() (bool, error) { return true, nil }
 func (p *noopDigitalPin) Write(_ bool) error  { return nil }
 func (p *noopDigitalPin) LastState() bool     { return true }
+func (p *noopDigitalPin) Number() int         { return 0 }
 
 type noopChannel struct {
 	noopDigitalPin

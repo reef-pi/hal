@@ -47,6 +47,7 @@ func (m Metadata) HasCapability(cap Capability) bool {
 type Pin interface {
 	io.Closer
 	Name() string
+	Number() int
 }
 type Driver interface {
 	io.Closer
