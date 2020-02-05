@@ -5,7 +5,18 @@ import (
 )
 
 func TestDriver(t *testing.T) {
-	var d Driver = NewNoopDriver()
+	var f DriverFactory = NoopFactory()
+	var params []ConfigParameter = []ConfigParameter{{
+		Name:  "Sample Parameter",
+		Value: "Value",
+	}}
+
+	temp, err := f.CreateDriver(params, nil)
+	d := temp.(Driver)
+	if err != nil {
+		t.Error("Error creating noop driver")
+	}
+
 	if d.Metadata().Name == "" {
 		t.Error("Noop driver name should not be empty")
 	}
@@ -13,7 +24,9 @@ func TestDriver(t *testing.T) {
 		t.Error()
 	}
 
-	var input DigitalInputDriver = NewNoopDriver()
+	var input DigitalInputDriver
+	di, _ := f.CreateDriver(params, nil)
+	input = di.(DigitalInputDriver)
 	if len(input.DigitalInputPins()) != 0 {
 		t.Error("Wrong input pins:", len(input.DigitalInputPins()))
 	}
@@ -24,7 +37,10 @@ func TestDriver(t *testing.T) {
 	if _, err := pin.Read(); err != nil {
 		t.Error(err)
 	}
-	var output DigitalOutputDriver = NewNoopDriver()
+
+	var output DigitalOutputDriver
+	dod, _ := f.CreateDriver(params, nil)
+	output = dod.(DigitalOutputDriver)
 	if len(output.DigitalOutputPins()) != 0 {
 		t.Error("Wrong output pins:", len(output.DigitalOutputPins()))
 	}
@@ -36,7 +52,8 @@ func TestDriver(t *testing.T) {
 		t.Error(err)
 	}
 
-	var pwm PWMDriver = NewNoopDriver()
+	p, _ := f.CreateDriver(params, nil)
+	var pwm PWMDriver = p.(PWMDriver)
 	if len(pwm.PWMChannels()) != 0 {
 		t.Error("Wrong number of pwm channels: ", len(pwm.PWMChannels()))
 	}
@@ -52,7 +69,15 @@ func TestDriver(t *testing.T) {
 }
 
 func TestAnalog(t *testing.T) {
-	var input AnalogInputDriver = NewNoopDriver()
+
+	var f DriverFactory = NoopFactory()
+	var params []ConfigParameter = []ConfigParameter{{
+		Name:  "Sample Parameter",
+		Value: "Value",
+	}}
+
+	tmp, _ := f.CreateDriver(params, nil)
+	input := tmp.(AnalogInputDriver)
 	if len(input.AnalogInputPins()) != 0 {
 		t.Error("Wrong input pins:", len(input.AnalogInputPins()))
 	}
@@ -62,5 +87,26 @@ func TestAnalog(t *testing.T) {
 	}
 	if _, err := ipin.Read(); err != nil {
 		t.Error(err)
+	}
+}
+
+func TestFactory_Get_Parameters_with_Validation_Failure(t *testing.T) {
+	var f DriverFactory = NoopFactory()
+	params := f.GetParameters()
+
+	if l := len(params); l != 1 {
+		t.Error("NoopFactory should return a single parameter")
+	}
+
+	var param = ConfigParameter{
+		Name:  "Bad Parameter",
+		Value: 33,
+	}
+	params = []ConfigParameter{param}
+
+	_, err := f.CreateDriver(params, nil)
+
+	if err == nil {
+		t.Error("Invalid parameters should not create a driver")
 	}
 }

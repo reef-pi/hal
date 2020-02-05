@@ -34,12 +34,21 @@ type Metadata struct {
 	Capabilities []Capability `json:"capabilities"`
 }
 
+type ConfigParameterType int
+
+const (
+	String ConfigParameterType = iota + 1
+	Number
+	IpAddress
+	Url
+)
+
 type ConfigParameter struct {
-	Name     string `json:"name"`
-	Value    string `json:"value"`
-	DataType string `json:"datatype"`
-	Order    int    `json:"order"`
-	Default  string `json:"default"`
+	Name    string
+	Value   interface{}
+	Type    ConfigParameterType
+	Order   int
+	Default interface{}
 }
 
 func (m Metadata) HasCapability(cap Capability) bool {
@@ -62,7 +71,11 @@ type Driver interface {
 	io.Closer
 	Metadata() Metadata
 	Pins(Capability) ([]Pin, error)
+}
+
+type DriverFactory interface {
 	GetParameters() []ConfigParameter
-	LoadParameters(parameters []ConfigParameter) error
-	ValidateParameters(parameters []ConfigParameter) bool
+	ValidateParameters(parameters []ConfigParameter) (bool, []string)
+	Metadata() Metadata
+	CreateDriver(parameters []ConfigParameter, hardwareResources interface{}) (interface{}, error)
 }
