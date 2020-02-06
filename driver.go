@@ -1,7 +1,9 @@
+// Package hal defines the interfaces for implementing a driver in reef-pi
 package hal
 
 import "io"
 
+// Capability represents the capabilities of a driver
 type Capability int
 
 const (
@@ -34,6 +36,7 @@ type Metadata struct {
 	Capabilities []Capability `json:"capabilities"`
 }
 
+// ConfigParameterType indicates the type of a configuration parameter
 type ConfigParameterType int
 
 const (
@@ -43,6 +46,7 @@ const (
 	Url
 )
 
+// ConfigParameter represent a configuration parameter required by a driver
 type ConfigParameter struct {
 	Name    string
 	Value   interface{}
@@ -73,9 +77,20 @@ type Driver interface {
 	Pins(Capability) ([]Pin, error)
 }
 
+// DriverFactory is responsible for creating drivers and providing information about a driver.
 type DriverFactory interface {
+
+	//GetParameters returns the parameters that the driver expects.
 	GetParameters() []ConfigParameter
+
+	//ValidateParameters validates the parameters for a driver.
+	//The boolean result is true if the parameters are valid (and the array of failure messages should be nil or empty).
+	//The array of failures should contain all of the validation errors. It should not short circuit after the first failure.
 	ValidateParameters(parameters []ConfigParameter) (bool, []string)
+
+	//Metadata returns the Metadata the driver can provide.
 	Metadata() Metadata
-	CreateDriver(parameters []ConfigParameter, hardwareResources interface{}) (interface{}, error)
+
+	//CreateDriver validates the parameters and returns the driver if validation succeeds.
+	CreateDriver(parameters []ConfigParameter, hardwareResources interface{}) (Driver, error)
 }

@@ -11,8 +11,7 @@ func TestDriver(t *testing.T) {
 		Value: "Value",
 	}}
 
-	temp, err := f.CreateDriver(params, nil)
-	d := temp.(Driver)
+	d, err := f.CreateDriver(params, nil)
 	if err != nil {
 		t.Error("Error creating noop driver")
 	}
@@ -26,7 +25,12 @@ func TestDriver(t *testing.T) {
 
 	var input DigitalInputDriver
 	di, _ := f.CreateDriver(params, nil)
-	input = di.(DigitalInputDriver)
+	if di.Metadata().HasCapability(DigitalInput) {
+		input = di.(DigitalInputDriver)
+	} else {
+		t.Error("Unable to convert to DigitalInputDriver")
+	}
+
 	if len(input.DigitalInputPins()) != 0 {
 		t.Error("Wrong input pins:", len(input.DigitalInputPins()))
 	}
@@ -40,7 +44,12 @@ func TestDriver(t *testing.T) {
 
 	var output DigitalOutputDriver
 	dod, _ := f.CreateDriver(params, nil)
-	output = dod.(DigitalOutputDriver)
+	if dod.Metadata().HasCapability(DigitalOutput) {
+		output = di.(DigitalOutputDriver)
+	} else {
+		t.Error("Unable to convert to DigitalOutputDriver")
+	}
+
 	if len(output.DigitalOutputPins()) != 0 {
 		t.Error("Wrong output pins:", len(output.DigitalOutputPins()))
 	}
@@ -53,7 +62,13 @@ func TestDriver(t *testing.T) {
 	}
 
 	p, _ := f.CreateDriver(params, nil)
-	var pwm PWMDriver = p.(PWMDriver)
+	var pwm PWMDriver
+	if p.Metadata().HasCapability(PWM) {
+		pwm = p.(PWMDriver)
+	} else {
+		t.Error("Unable to convert to PWMDriver")
+	}
+
 	if len(pwm.PWMChannels()) != 0 {
 		t.Error("Wrong number of pwm channels: ", len(pwm.PWMChannels()))
 	}
@@ -77,7 +92,13 @@ func TestAnalog(t *testing.T) {
 	}}
 
 	tmp, _ := f.CreateDriver(params, nil)
-	input := tmp.(AnalogInputDriver)
+	var input AnalogInputDriver
+	if tmp.Metadata().HasCapability(AnalogInput) {
+		input = tmp.(AnalogInputDriver)
+	} else {
+		t.Error("Unable to convert to AnalogInputDriver")
+	}
+
 	if len(input.AnalogInputPins()) != 0 {
 		t.Error("Wrong input pins:", len(input.AnalogInputPins()))
 	}
