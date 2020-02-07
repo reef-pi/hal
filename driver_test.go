@@ -11,7 +11,7 @@ func TestDriver(t *testing.T) {
 		Value: "Value",
 	}}
 
-	d, err := f.CreateDriver(params, nil)
+	d, err := f.NewDriver(params, nil)
 	if err != nil {
 		t.Error("Error creating noop driver")
 	}
@@ -24,7 +24,7 @@ func TestDriver(t *testing.T) {
 	}
 
 	var input DigitalInputDriver
-	di, _ := f.CreateDriver(params, nil)
+	di, _ := f.NewDriver(params, nil)
 	if di.Metadata().HasCapability(DigitalInput) {
 		input = di.(DigitalInputDriver)
 	} else {
@@ -43,7 +43,7 @@ func TestDriver(t *testing.T) {
 	}
 
 	var output DigitalOutputDriver
-	dod, _ := f.CreateDriver(params, nil)
+	dod, _ := f.NewDriver(params, nil)
 	if dod.Metadata().HasCapability(DigitalOutput) {
 		output = di.(DigitalOutputDriver)
 	} else {
@@ -61,7 +61,7 @@ func TestDriver(t *testing.T) {
 		t.Error(err)
 	}
 
-	p, _ := f.CreateDriver(params, nil)
+	p, _ := f.NewDriver(params, nil)
 	var pwm PWMDriver
 	if p.Metadata().HasCapability(PWM) {
 		pwm = p.(PWMDriver)
@@ -91,7 +91,7 @@ func TestAnalog(t *testing.T) {
 		Value: "Value",
 	}}
 
-	tmp, _ := f.CreateDriver(params, nil)
+	tmp, _ := f.NewDriver(params, nil)
 	var input AnalogInputDriver
 	if tmp.Metadata().HasCapability(AnalogInput) {
 		input = tmp.(AnalogInputDriver)
@@ -125,7 +125,7 @@ func TestFactory_Get_Parameters_with_Validation_Failure(t *testing.T) {
 	}
 	params = []ConfigParameter{param}
 
-	_, err := f.CreateDriver(params, nil)
+	_, err := f.NewDriver(params, nil)
 
 	if err == nil {
 		t.Error("Invalid parameters should not create a driver")

@@ -92,5 +92,5 @@ type DriverFactory interface {
 	Metadata() Metadata
 
 	//CreateDriver validates the parameters and returns the driver if validation succeeds.
-	CreateDriver(parameters []ConfigParameter, hardwareResources interface{}) (Driver, error)
+	NewDriver(parameters []ConfigParameter, hardwareResources interface{}) (Driver, error)
 }

@@ -124,7 +124,7 @@ func (n *noopFactory) Metadata() Metadata {
 	return n.meta
 }
 
-func (n *noopFactory) CreateDriver(parameters []ConfigParameter, hardwareResources interface{}) (Driver, error) {
+func (n *noopFactory) NewDriver(parameters []ConfigParameter, hardwareResources interface{}) (Driver, error) {
 	if valid, failures := n.ValidateParameters(parameters); !valid {
 		msg := "Invalid parameters: \n" + strings.Join(failures, "\n")
 		return nil, errors.New(msg)
