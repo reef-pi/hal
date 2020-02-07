@@ -70,7 +70,8 @@ type noopFactory struct {
 var factory *noopFactory
 var once sync.Once
 
-func NoopFactory() *noopFactory {
+// NoopFactory provides the factory to get NoopDriver parameters and NoopDrivers
+func NoopFactory() DriverFactory {
 	once.Do(func() {
 		factory = &noopFactory{
 			meta: Metadata{
