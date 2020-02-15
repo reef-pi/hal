@@ -42,6 +42,7 @@ type ConfigParameterType int
 const (
 	String ConfigParameterType = iota + 1
 	Number
+	Boolean
 	IpAddress
 	Url
 )
