@@ -87,11 +87,11 @@ type DriverFactory interface {
 	//ValidateParameters validates the parameters for a driver.
 	//The boolean result is true if the parameters are valid (and the array of failure messages should be nil or empty).
 	//The array of failures should contain all of the validation errors. It should not short circuit after the first failure.
-	ValidateParameters(parameters []ConfigParameter) (bool, []string)
+	ValidateParameters(parameters map[string]interface{}) (bool, []string)
 
 	//Metadata returns the Metadata the driver can provide.
 	Metadata() Metadata
 
 	//CreateDriver validates the parameters and returns the driver if validation succeeds.
-	NewDriver(parameters []ConfigParameter, hardwareResources interface{}) (Driver, error)
+	NewDriver(parameters map[string]interface{}, hardwareResources interface{}) (Driver, error)
 }

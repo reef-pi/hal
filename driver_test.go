@@ -6,10 +6,9 @@ import (
 
 func TestDriver(t *testing.T) {
 	var f DriverFactory = NoopFactory()
-	var params []ConfigParameter = []ConfigParameter{{
-		Name:  "Sample Parameter",
-		Value: "Value",
-	}}
+
+	params := make(map[string]interface{})
+	params["Sample Parameter"] = "Value"
 
 	d, err := f.NewDriver(params, nil)
 	if err != nil {
@@ -86,10 +85,9 @@ func TestDriver(t *testing.T) {
 func TestAnalog(t *testing.T) {
 
 	var f DriverFactory = NoopFactory()
-	var params []ConfigParameter = []ConfigParameter{{
-		Name:  "Sample Parameter",
-		Value: "Value",
-	}}
+
+	params := make(map[string]interface{})
+	params["Sample Parameter"] = "Value"
 
 	tmp, _ := f.NewDriver(params, nil)
 	var input AnalogInputDriver
@@ -113,17 +111,14 @@ func TestAnalog(t *testing.T) {
 
 func TestFactory_Get_Parameters_with_Validation_Failure(t *testing.T) {
 	var f DriverFactory = NoopFactory()
-	params := f.GetParameters()
+	p := f.GetParameters()
 
-	if l := len(params); l != 1 {
+	if l := len(p); l != 1 {
 		t.Error("NoopFactory should return a single parameter")
 	}
 
-	var param = ConfigParameter{
-		Name:  "Bad Parameter",
-		Value: 33,
-	}
-	params = []ConfigParameter{param}
+	params := make(map[string]interface{})
+	params["Bad Parameter"] = 33
 
 	_, err := f.NewDriver(params, nil)
 

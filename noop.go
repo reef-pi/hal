@@ -97,24 +97,24 @@ func (n *noopFactory) GetParameters() []ConfigParameter {
 	return n.parameters
 }
 
-func (n *noopFactory) ValidateParameters(parameters []ConfigParameter) (bool, []string) {
+func (n *noopFactory) ValidateParameters(parameters map[string]interface{}) (bool, []string) {
 
 	var failures = make([]string, 0, 0)
 	if paramCount := len(parameters); paramCount != 1 {
 		failures = append(failures, fmt.Sprint("NoopDriver expects 1 and only 1 parameter, but received", paramCount, "."))
 	}
 
-	for _, param := range parameters {
-		if param.Name == "Sample Parameter" {
-			val, ok := param.Value.(string)
+	for k, v := range parameters {
+		if k == "Sample Parameter" {
+			val, ok := v.(string)
 			if !ok {
-				failures = append(failures, fmt.Sprint("Sample Parameter is not a string.", param.Value, "was received."))
+				failures = append(failures, fmt.Sprint("Sample Parameter is not a string.", v, "was received."))
 			}
 			if len(val) < 3 {
-				failures = append(failures, fmt.Sprint("Sample Parameter must be at least 3 characters long. ", param.Value, "was received."))
+				failures = append(failures, fmt.Sprint("Sample Parameter must be at least 3 characters long. ", v, "was received."))
 			}
 		} else {
-			failures = append(failures, fmt.Sprint("Unrecognized parameter:", param.Name, ":", param.Value, "."))
+			failures = append(failures, fmt.Sprint("Unrecognized parameter:", k, ":", v, "."))
 		}
 	}
 
@@ -125,7 +125,7 @@ func (n *noopFactory) Metadata() Metadata {
 	return n.meta
 }
 
-func (n *noopFactory) NewDriver(parameters []ConfigParameter, hardwareResources interface{}) (Driver, error) {
+func (n *noopFactory) NewDriver(parameters map[string]interface{}, hardwareResources interface{}) (Driver, error) {
 	if valid, failures := n.ValidateParameters(parameters); !valid {
 		msg := "Invalid parameters: \n" + strings.Join(failures, "\n")
 		return nil, errors.New(msg)
