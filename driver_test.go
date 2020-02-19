@@ -126,3 +126,42 @@ func TestFactory_Get_Parameters_with_Validation_Failure(t *testing.T) {
 		t.Error("Invalid parameters should not create a driver")
 	}
 }
+
+func TestConvertToInt(t *testing.T) {
+	var val interface{}
+	val = true
+	var x int
+	var ok bool
+
+	x, ok = ConvertToInt(val)
+	if ok {
+		t.Error("bool should not convert to int")
+	}
+
+	val = float32(37)
+	x, ok = ConvertToInt(val)
+	if !ok {
+		t.Error("float should convert to int")
+	}
+	if x != 37 {
+		t.Error("Float should convert to an int")
+	}
+
+	val = float64(37.4)
+	x, ok = ConvertToInt(val)
+	if ok {
+		t.Error("float with decimal value should not convert to int")
+	}
+
+	val = "37"
+	x, ok = ConvertToInt(val)
+	if !ok {
+		t.Error("string version of integers should be implemented")
+	}
+
+	val = "34.2"
+	x, ok = ConvertToInt(val)
+	if ok {
+		t.Error("string decimal should not convert to int")
+	}
+}

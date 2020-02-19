@@ -1,7 +1,10 @@
 // Package hal defines the interfaces for implementing a driver in reef-pi
 package hal
 
-import "io"
+import (
+	"io"
+	"strconv"
+)
 
 // Capability represents the capabilities of a driver
 type Capability int
@@ -41,7 +44,8 @@ type ConfigParameterType int
 
 const (
 	String ConfigParameterType = iota + 1
-	Number
+	Integer
+	Decimal
 	Boolean
 	IpAddress
 	Url
@@ -94,4 +98,38 @@ type DriverFactory interface {
 
 	//CreateDriver validates the parameters and returns the driver if validation succeeds.
 	NewDriver(parameters map[string]interface{}, hardwareResources interface{}) (Driver, error)
+}
+
+// ConvertToInt converts an interface to int if possible.
+func ConvertToInt(val interface{}) (int, bool) {
+	switch t := val.(type) {
+	case float32:
+		if val.(float32) == float32(int(val.(float32))) {
+			return int(val.(float32)), true
+		}
+		return 0, false
+	case float64:
+		if val.(float64) == float64(int(val.(float64))) {
+			return int(val.(float64)), true
+		}
+		return 0, false
+	case int8:
+	case uint8:
+	case int16:
+	case uint16:
+	case int32:
+	case uint32:
+	case int64:
+	case uint64:
+	case uint:
+	case int:
+		return int(t), true
+	case string:
+		v, err := strconv.Atoi(val.(string))
+		return v, err == nil
+	default:
+		return 0, false
+	}
+
+	return 0, false
 }
