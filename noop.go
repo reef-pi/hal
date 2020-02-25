@@ -3,7 +3,6 @@ package hal
 import (
 	"errors"
 	"fmt"
-	"strings"
 	"sync"
 )
 
@@ -82,7 +81,6 @@ func NoopFactory() DriverFactory {
 			parameters: []ConfigParameter{
 				{
 					Name:    "Sample Parameter",
-					Value:   nil,
 					Type:    String,
 					Order:   0,
 					Default: "sample",
@@ -97,25 +95,22 @@ func (n *noopFactory) GetParameters() []ConfigParameter {
 	return n.parameters
 }
 
-func (n *noopFactory) ValidateParameters(parameters map[string]interface{}) (bool, []string) {
+func (n *noopFactory) ValidateParameters(parameters map[string]interface{}) (bool, map[string][]string) {
 
-	var failures = make([]string, 0, 0)
-	if paramCount := len(parameters); paramCount != 1 {
-		failures = append(failures, fmt.Sprint("NoopDriver expects 1 and only 1 parameter, but received", paramCount, "."))
-	}
+	var failures = make(map[string][]string)
 
-	for k, v := range parameters {
-		if k == "Sample Parameter" {
-			val, ok := v.(string)
-			if !ok {
-				failures = append(failures, fmt.Sprint("Sample Parameter is not a string.", v, "was received."))
-			}
-			if len(val) < 3 {
-				failures = append(failures, fmt.Sprint("Sample Parameter must be at least 3 characters long. ", v, "was received."))
-			}
-		} else {
-			failures = append(failures, fmt.Sprint("Unrecognized parameter:", k, ":", v, "."))
+	if v, ok := parameters["Sample Parameter"]; ok {
+		val, ok := v.(string)
+		if !ok {
+			failure := fmt.Sprint("Sample Parameter is not a string.", v, "was received.")
+			failures["Sample Parameter"] = append(failures["Sample Parameter"], failure)
 		}
+		if len(val) < 3 {
+			failure := fmt.Sprint("Sample Parameter must be at least 3 characters long. ", v, "was received.")
+			failures["Sample Parameter"] = append(failures["Sample Parameter"], failure)
+		}
+	} else {
+		failures["Sample Parameter"] = append(failures["Sample Parameter"], "Sample Parameter is required parameter, but was not received.")
 	}
 
 	return len(failures) == 0, failures
@@ -127,8 +122,7 @@ func (n *noopFactory) Metadata() Metadata {
 
 func (n *noopFactory) NewDriver(parameters map[string]interface{}, hardwareResources interface{}) (Driver, error) {
 	if valid, failures := n.ValidateParameters(parameters); !valid {
-		msg := "Invalid parameters: \n" + strings.Join(failures, "\n")
-		return nil, errors.New(msg)
+		return nil, errors.New(ToErrorString(failures))
 	}
 	return &noopDriver{meta: n.meta}, nil
 }

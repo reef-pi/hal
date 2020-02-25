@@ -4,6 +4,7 @@ package hal
 import (
 	"io"
 	"strconv"
+	"strings"
 )
 
 // Capability represents the capabilities of a driver
@@ -47,17 +48,14 @@ const (
 	Integer
 	Decimal
 	Boolean
-	IpAddress
-	Url
 )
 
 // ConfigParameter represent a configuration parameter required by a driver
 type ConfigParameter struct {
-	Name    string
-	Value   interface{}
-	Type    ConfigParameterType
-	Order   int
-	Default interface{}
+	Name    string              `json:"name"`
+	Type    ConfigParameterType `json:"type"`
+	Order   int                 `json:"order"`
+	Default interface{}         `json:"default"`
 }
 
 func (m Metadata) HasCapability(cap Capability) bool {
@@ -91,7 +89,7 @@ type DriverFactory interface {
 	//ValidateParameters validates the parameters for a driver.
 	//The boolean result is true if the parameters are valid (and the array of failure messages should be nil or empty).
 	//The array of failures should contain all of the validation errors. It should not short circuit after the first failure.
-	ValidateParameters(parameters map[string]interface{}) (bool, []string)
+	ValidateParameters(parameters map[string]interface{}) (bool, map[string][]string)
 
 	//Metadata returns the Metadata the driver can provide.
 	Metadata() Metadata
@@ -132,4 +130,14 @@ func ConvertToInt(val interface{}) (int, bool) {
 	}
 
 	return 0, false
+}
+
+// ToErrorString converts a map of failures to a single string
+func ToErrorString(failures map[string][]string) string {
+	var m []string
+	for k, v := range failures {
+		m = append(m, k+": "+strings.Join(v, "\n"))
+	}
+	msg := "Invalid parameters: \n" + strings.Join(m, "\n")
+	return msg
 }
