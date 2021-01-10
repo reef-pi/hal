@@ -1,6 +1,6 @@
 # reef-pi - Hardware Abstraction Layer
 
-[![Build Status](https://github.com/reef-pi/reef-pi/workflows/go/badge.svg?branch=master)
+[![Build Status](https://github.com/reef-pi/hal/workflows/go/badge.svg?branch=master)
 [![Coverage Status](https://codecov.io/gh/reef-pi/hal/branch/master/graph/badge.svg)](https://codecov.io/gh/reef-pi/hal)
 [![Go Report Card](https://goreportcard.com/badge/reef-pi/hal)](https://goreportcard.com/report/reef-pi/hal)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/reef-pi/hal/blob/master/LICENSE.txt)
