@@ -1,6 +1,6 @@
 # reef-pi - Hardware Abstraction Layer
 
-[![Build Status](https://travis-ci.org/reef-pi/hal.png?branch=master)](https://travis-ci.org/reef-pi/hal)
+[![Build Status](https://github.com/reef-pi/reef-pi/workflows/go/badge.svg?branch=master)
 [![Coverage Status](https://codecov.io/gh/reef-pi/hal/branch/master/graph/badge.svg)](https://codecov.io/gh/reef-pi/hal)
 [![Go Report Card](https://goreportcard.com/badge/reef-pi/hal)](https://goreportcard.com/report/reef-pi/hal)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/reef-pi/hal/blob/master/LICENSE.txt)
@@ -11,10 +11,12 @@
 
 The `hal` package provide common types for hardware capabilities in reef-pi.
 It hides device specific details from the controller logic. reef-pi modules like ATO,
-pH, temperature uses hal to perform hardware based operations.
+and pH, uses hal interfaces to perform hardware based operations. The HAL interfaces cover
+metdata and methods for digital or analog I/O. Check out [reef-pi/drivers](https://github.com/reef-pi/drivers)
+for examples.
 
-'hal' is intended to be primarily interfaces only, void of business logic and
-any other dependency package. A NoopDriver or [null](https://en.wikipedia.org/wiki/Null_object_pattern)
+'hal' is mostly made of interfaces and void of business logic and
+or dependency package. A No-Op or [null](https://en.wikipedia.org/wiki/Null_object_pattern)
 driver is included to ease testing.
 
 ## Usage
