@@ -2,7 +2,7 @@ package hal
 
 type AnalogInputPin interface {
 	Pin
-	Read() (float64, error)
+	Value() (float64, error)
 	Calibrate([]Measurement) error
 	Measure() (float64, error)
 }
