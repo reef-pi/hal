@@ -27,7 +27,7 @@ type noopAnalogPin struct {
 	noopDigitalPin
 }
 
-func (p *noopAnalogPin) Read() (float64, error)          { return 0, nil }
+func (p *noopAnalogPin) Value() (float64, error)         { return 0, nil }
 func (p *noopAnalogPin) Measure() (float64, error)       { return 0, nil }
 func (p *noopAnalogPin) Calibrate(_ []Measurement) error { return nil }
 

@@ -104,7 +104,7 @@ func TestAnalog(t *testing.T) {
 	if perr != nil {
 		t.Error(perr)
 	}
-	if _, err := ipin.Read(); err != nil {
+	if _, err := ipin.Value(); err != nil {
 		t.Error(err)
 	}
 }
